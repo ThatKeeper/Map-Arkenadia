@@ -1,0 +1,197 @@
+
+#dock {
+    left: max(12px, env(safe-area-inset-left, 0px));
+    top: calc(12px + env(safe-area-inset-top, 0px) + 58px);
+    width: min(330px, calc(100vw - 24px));
+    max-height: calc(100% - 150px);
+    overflow: auto;
+    padding: 8px 12px 12px;
+    font-size: 21px;
+    line-height: 1.15;
+}
+
+/* Pestañas */
+
+#tabs {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 8px;
+}
+
+#tabs button {
+    flex: 1;
+    font: 700 19px 'Caveat', cursive;
+    background: transparent;
+    border: 2px dashed var(--outline);
+    border-radius: 8px;
+    padding: 3px 0;
+    cursor: pointer;
+}
+
+#tabs button[aria-selected=true] {
+    background: var(--ink);
+    color: var(--hud);
+    border-style: solid;
+}
+
+/* Secciones */
+
+#dock section[hidden] {
+    display: none;
+}
+
+#dock h2 {
+    margin: 0 0 6px;
+    font: 700 24px 'Caveat', cursive;
+}
+
+#dock .seg {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 6px;
+}
+
+#dock .seg button {
+    flex: 1;
+    font: 700 20px 'Caveat', cursive;
+    background: transparent;
+    border: 2px dashed var(--outline);
+    border-radius: 8px;
+    padding: 3px 2px;
+    cursor: pointer;
+}
+
+#dock .seg button[aria-checked=true] {
+    background: var(--ink);
+    color: var(--hud);
+    border-style: solid;
+}
+
+#dock .small {
+    margin: 0 0 8px;
+    font-size: 18px;
+    opacity: .85;
+}
+
+/* Etiquetas y checkbox */
+
+#dock label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+    cursor: pointer;
+}
+
+#dock input[type=checkbox] {
+    width: 21px;
+    height: 21px;
+    accent-color: var(--focus);
+    flex: none;
+}
+
+#dock hr {
+    border: 0;
+    border-top: 2px dashed var(--outline);
+    opacity: .35;
+    margin: 8px 0;
+}
+
+/* Botones */
+
+#dock .btn,
+#pop button,
+#chip button {
+    font: 700 20px 'Caveat', cursive;
+    background: transparent;
+    border: 2px dashed var(--outline);
+    border-radius: 8px;
+    padding: 4px 10px;
+    cursor: pointer;
+}
+
+#dock .btn[aria-pressed=true] {
+    background: var(--ink);
+    color: var(--hud);
+    border-style: solid;
+}
+
+/* Filas */
+
+#dock .row,
+#pop .row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 6px 0;
+    align-items: center;
+}
+
+#dock .row .btn {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Campos de entrada */
+
+#dock input[type=text],
+#dock input[type=search],
+#dock input[type=number],
+#dock select,
+#pop input,
+#pop textarea {
+    width: 100%;
+    box-sizing: border-box;
+    font: 500 20px 'Caveat', cursive;
+    background: var(--surface);
+    border: 2px solid var(--outline);
+    border-radius: 6px;
+    padding: 4px 8px;
+}
+
+#dock input[type=number] {
+    width: 90px;
+}
+
+/* Listas */
+
+#dock ul {
+    list-style: none;
+    margin: 6px 0;
+    padding: 0;
+    max-height: 190px;
+    overflow: auto;
+}
+
+#dock li {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    padding: 2px 0;
+}
+
+#dock li>button:first-child {
+    flex: 1;
+    text-align: left;
+    font: 500 20px 'Caveat', cursive;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px dotted var(--outline);
+    padding: 3px 2px;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#dock li>button+button {
+    font: 700 18px 'Caveat', cursive;
+    background: transparent;
+    border: 1px dashed var(--outline);
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#dock li.empty {
+    opacity: .7;
+}

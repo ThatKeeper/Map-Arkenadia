@@ -1,0 +1,25 @@
+// src/ui/paint/index.js
+export { addDetailItemToPaths } from './addDetailItemToPaths';
+export { addMountainToPaths } from './addMountainToPaths';
+export { addTreeToPath } from './addTreeToPath';
+export { buildDetailPaths } from './buildDetailPaths';
+export { buildTornPath } from './buildTornPath';
+export { clipToTornEdge } from './clipToTornEdge';
+export { drawBiomeHighlight } from './drawBiomeHighlight';
+export { drawLandmarks } from './drawLandmarks';
+export { drawPaperGrain } from './drawPaperGrain';
+export { drawRiver } from './drawRiver';
+export { drawStains } from './drawStains';
+export { drawTerrainDetails } from './drawTerrainDetails';
+export { drawVignetteAndFrame } from './drawVignetteAndFrame';
+export { drawWhirlpool } from './drawWhirlpool';
+export { fillTerrain } from './fillTerrain';
+export { findFirstVisibleItem } from './findFirstVisibleItem';
+export { getDetailLod } from './getDetailLod';
+export { getGrainPattern } from './getGrainPattern';
+export { getGrainPeriod } from './getGrainPeriod';
+export { getTornPath } from './getTornPath';
+export { paintWorldRegion } from './paintWorldRegion';
+export { screenLineWidth } from './screenLineWidth';
+export { strokeCoastlines } from './strokeCoastlines';
+export { strokeDetailPaths } from './strokeDetailPaths';

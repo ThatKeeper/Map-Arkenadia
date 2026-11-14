@@ -1,0 +1,44 @@
+#tb {
+  left: max(12px, env(safe-area-inset-left, 0px));
+  top: calc(12px + env(safe-area-inset-top, 0px));
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 6px;
+}
+#tb button {
+  width: 40px;
+  height: 40px;
+  font:
+    700 26px "Caveat",
+    cursive;
+  background: transparent;
+  border: 2px dashed var(--ink);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+#tb button:hover,
+#dock button:hover,
+#pop button:hover,
+#chip button:hover {
+  background: #f3e4bd;
+}
+#tb button[aria-expanded="true"] {
+  background: var(--ink);
+  color: var(--hud);
+  border-style: solid;
+}
+#pct {
+  font-size: 20px;
+  min-width: 46px;
+  text-align: center;
+}
+.hud button:focus-visible,
+.hud input:focus-visible,
+.hud select:focus-visible,
+.hud textarea:focus-visible {
+  outline: 3px solid #6b2e1c;
+  outline-offset: 2px;
+}

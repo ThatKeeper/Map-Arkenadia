@@ -1,0 +1,8 @@
+
+#tip {
+    pointer-events: none;
+    padding: 4px 10px;
+    font-size: 20px;
+    white-space: nowrap;
+    z-index: 6;
+}

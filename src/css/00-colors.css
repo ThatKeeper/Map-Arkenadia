@@ -1,0 +1,29 @@
+
+:root {
+    /* Colores principales */
+    --ink: #3b2a1a;
+    --hud: #ead7ab;
+
+    /* Fondo */
+    --background: #1d130b;
+
+    /* Superficies */
+    --surface: #f6ead0;
+    --surface-hover: #f3e4bd;
+
+    /* Contornos y detalles */
+    --outline: var(--ink);
+    --focus: #6b2e1c;
+
+    /* Texto */
+    --text-primary: var(--ink);
+    --text-secondary: rgba(59, 42, 26, .7);
+
+    /* Pantalla de carga */
+    --loading-background: var(--background);
+    --loading-text: var(--hud);
+    --loading-bar: var(--hud);
+
+    /* Sombras */
+    --shadow: rgba(0, 0, 0, .35);
+}

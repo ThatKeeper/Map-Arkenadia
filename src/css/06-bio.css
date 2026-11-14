@@ -1,0 +1,37 @@
+
+.bio {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 2px dashed transparent;
+    border-radius: 8px;
+    padding: 4px 6px;
+    font: 500 21px 'Caveat', cursive;
+    cursor: pointer;
+    text-align: left;
+}
+
+.bio i {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--outline);
+    border-radius: 5px;
+    flex: none;
+}
+
+.bio span {
+    flex: 1;
+}
+
+.bio em {
+    font-style: normal;
+    opacity: .7;
+    font-size: 18px;
+}
+
+.bio[aria-pressed=true] {
+    border-color: var(--outline);
+    background: var(--surface-hover);
+}

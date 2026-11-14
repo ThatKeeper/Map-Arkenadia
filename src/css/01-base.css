@@ -1,0 +1,59 @@
+
+:root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html {
+    scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: var(--background);
+    font-family: 'Caveat', cursive, sans-serif;
+    color: var(--text-primary);
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Elementos generales del HUD */
+
+.hud {
+    position: absolute;
+    z-index: 5;
+    background: var(--hud);
+    border: 2px solid var(--outline);
+    border-radius: 6px 10px 7px 9px;
+    box-shadow: 3px 4px 0 var(--shadow);
+}
+
+.hud button,
+.hud select,
+.hud input,
+.hud textarea {
+    font-family: 'Caveat', cursive;
+    color: var(--text-primary);
+}
+
+.hud button:focus-visible,
+.hud input:focus-visible,
+.hud select:focus-visible,
+.hud textarea:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+}
+
+/* Elementos ocultos */
+
+#dock[hidden],
+#stats[hidden],
+#toast[hidden],
+#chip[hidden],
+#pop[hidden],
+#tip[hidden],
+#mini[hidden] {
+    display: none;
+}

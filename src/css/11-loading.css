@@ -1,0 +1,47 @@
+
+#load {
+    position: absolute;
+    inset: 0;
+    z-index: 9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--loading-background);
+    color: var(--loading-text);
+    font-size: 40px;
+    text-align: center;
+    padding: 0 20px;
+}
+
+#load>div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+#bar {
+    width: min(320px, 70vw);
+    height: 12px;
+    border: 2px solid var(--loading-bar);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#bar i {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: var(--loading-bar);
+    transition: width .15s;
+}
+
+#skip {
+    font: 700 24px 'Caveat', cursive;
+    color: var(--loading-text);
+    background: transparent;
+    border: 2px dashed var(--loading-text);
+    border-radius: 8px;
+    padding: 4px 18px;
+    cursor: pointer;
+}

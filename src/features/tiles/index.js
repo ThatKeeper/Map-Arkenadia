@@ -1,0 +1,26 @@
+// src/features/tiles/index.js
+export { acquireTileCanvas } from './acquireTileCanvas';
+export { buildPreloadQueue } from './buildPreloadQueue';
+export { collectIdleTiles } from './collectIdleTiles';
+export { collectMissingTiles } from './collectMissingTiles';
+export { collectNeighborLevelTiles } from './collectNeighborLevelTiles';
+export { collectPreloadTiles } from './collectPreloadTiles';
+export { collectRingTiles } from './collectRingTiles';
+export { designScaleOf } from './designScaleOf';
+export { evictTiles } from './evictTiles';
+export { flushAllTiles } from './flushAllTiles';
+export { fullTileRange } from './fullTileRange';
+export { getTileGeometry } from './getTileGeometry';
+export { getViewCenterInTiles } from './getViewCenterInTiles';
+export { hasTile } from './hasTile';
+export { isOverviewStale } from './isOverviewStale';
+export { pickZoomLevel } from './pickZoomLevel';
+export { renderOverview } from './renderOverview';
+export { renderPendingTiles } from './renderPendingTiles';
+export { renderTile } from './renderTile';
+export { renderTilesWithinBudget } from './renderTilesWithinBudget';
+export { renderVisibleSync } from './renderVisibleSync';
+export { selectIdleTiles } from './selectIdleTiles';
+export { startPreload } from './startPreload';
+export { tileKey } from './tileKey';
+export { visibleTileRange } from './visibleTileRange';

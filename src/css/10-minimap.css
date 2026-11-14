@@ -1,0 +1,9 @@
+
+#mini {
+    right: max(12px, env(safe-area-inset-right, 0px));
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    padding: 0;
+    cursor: pointer;
+    touch-action: none;
+    border-width: 2px;
+}

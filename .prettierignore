@@ -1,0 +1,4 @@
+dist
+node_modules
+src/config/mapImage.js
+tests/__snapshots__

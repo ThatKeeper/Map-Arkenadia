@@ -1,8 +1,9 @@
-// @ts-check
 // src/state/index.js
 export { activePointers } from './activePointers';
 export { build } from './build';
 export { dom } from './dom';
+export { history } from './history';
+export { iconCache } from './iconCache';
 export { interaction } from './interaction';
 export { letterWidthCache } from './letterWidthCache';
 export { loop } from './loop';

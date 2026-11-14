@@ -49,5 +49,6 @@ repositorio. Recomendado: ejecuta `npm install` una vez en local y sube `package
 
 ## Datos guardados
 
-`localStorage`: `mapaDatos` (marcadores y ruta, con `schemaVersion`), `mapaVista`, `mapaCfg`. Los datos antiguos
-(sin versión) se migran solos (`services/migrations/`). La migración v1 → v2 está preparada para la Fase 1.
+`localStorage`: `mapaDatos` (marcadores, categorías, ruta y etiquetas, con `schemaVersion: 2`), `mapaVista`
+(incluye el filtro de categorías), `mapaCfg`, `mapaBusq` (recientes y favoritos) y `mapaAtajos`. Los datos antiguos
+(v1 o sin versión) se migran solos (`services/migrations/`).

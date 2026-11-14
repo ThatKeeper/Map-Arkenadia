@@ -1,26 +1,19 @@
 // src/ui/lists/initMarkerIconPicker.js
 import { openMarkerPopup } from './openMarkerPopup';
-import { renderMarkerList } from './renderMarkerList';
-import { MARKER_ICONS } from '@/config';
+import { VISIBILITIES } from '@/config';
 import { getMarkerById } from '@/features/markers';
-import { saveUserData } from '@/services/storage';
 import { session } from '@/state';
 import { byId, createEl } from '@/utils';
 
-/** Crea los botones de icono del editor de marcador. */
+/** Prepara el editor de marcador: opciones de visibilidad y búsqueda de iconos. */
 export function initMarkerIconPicker() {
-  for (const [i, ic] of MARKER_ICONS.entries()) {
-    const b = createEl('button', ic[0]);
-    b.dataset.i = i;
-    b.setAttribute('aria-label', 'Icono ' + (i + 1));
-    b.onclick = () => {
-      const m = getMarkerById(session.selectedMarkerId);
-      if (!m) return;
-      m.i = i;
-      saveUserData();
-      renderMarkerList();
-      openMarkerPopup(m.id);
-    };
-    byId('pIcons').appendChild(b);
+  for (const [id, nombre] of VISIBILITIES) {
+    const o = createEl('option', nombre);
+    o.value = id;
+    byId('pVis').appendChild(o);
   }
+  byId('pIconQ').oninput = () => {
+    const m = getMarkerById(session.selectedMarkerId);
+    if (m) openMarkerPopup(m.id, true);
+  };
 }

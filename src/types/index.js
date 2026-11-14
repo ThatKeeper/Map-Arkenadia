@@ -4,14 +4,74 @@
 // Uso en otros archivos: /** @type {import('@/types').Marker} */  (o ruta relativa)
 
 /**
- * Marcador del mapa (esquema v1; la Fase 1 lo ampliará a v2).
+ * Marcador del mapa (esquema v2).
  * @typedef {Object} Marker
  * @property {number} id Identificador único dentro de `userData`
+ * @property {string} nombre Nombre (máx. 40 caracteres)
+ * @property {string} nota Nota (máx. 200 caracteres)
  * @property {number} x Posición X en el mundo (0..WORLD_WIDTH)
  * @property {number} y Posición Y en el mundo (0..WORLD_HEIGHT)
- * @property {string} n Nombre (máx. 40 caracteres)
- * @property {number} i Índice del icono en `MARKER_ICONS`
- * @property {string} t Nota (máx. 200 caracteres)
+ * @property {string} categoria Id de una categoría de `userData.categories`
+ * @property {string} icono Id de un icono de `INK_ICONS`
+ * @property {'todos'|'dm'|'mio'} visibilidad
+ * @property {number} creado Marca de tiempo (ms) de creación; 0 si se desconoce
+ * @property {number} actualizado Marca de tiempo (ms) de la última edición
+ */
+
+/**
+ * Categoría de marcador editable.
+ * @typedef {Object} Category
+ * @property {string} id
+ * @property {string} nombre
+ * @property {string} color Color #rrggbb
+ * @property {string} icono Icono por defecto de la categoría
+ */
+
+/**
+ * Cambios del usuario sobre una etiqueta original, o una etiqueta propia completa.
+ * Las posiciones están en unidades del mundo.
+ * @typedef {Object} LabelData
+ * @property {string} [id] Solo en etiquetas propias ("c1", "c2"…)
+ * @property {string} [texto]
+ * @property {number} [x]
+ * @property {number} [y]
+ * @property {number} [tam] Multiplicador de tamaño (0,3..4)
+ * @property {number} [rot] Rotación en radianes
+ * @property {string} [estilo] Tipo de etiqueta ('c' | 'r' | 's' | 'x' | 'n')
+ * @property {boolean} [oculta] Etiqueta original borrada
+ */
+
+/**
+ * Etiquetas del usuario: cambios sobre las originales (por id "o<índice>") y etiquetas nuevas.
+ * @typedef {Object} UserLabels
+ * @property {Record<string, LabelData>} edits
+ * @property {LabelData[]} custom
+ * @property {number} nid Siguiente número libre para etiquetas propias
+ */
+
+/**
+ * Etiqueta lista para dibujar (original con sus cambios, o propia).
+ * @typedef {Object} EffectiveLabel
+ * @property {string} id
+ * @property {string} texto
+ * @property {number} x
+ * @property {number} y
+ * @property {string} tipo
+ * @property {number} minZoom
+ * @property {number} rot
+ * @property {number} tam
+ * @property {boolean} original
+ * @property {boolean} editada
+ */
+
+/**
+ * Comando de deshacer/rehacer.
+ * @typedef {Object} Command
+ * @property {string} label Texto para avisos ("Marcador borrado")
+ * @property {() => void} do Aplica el cambio
+ * @property {() => void} undo Lo revierte
+ * @property {string} [groupKey] Si coincide con el del comando anterior (y es reciente), se fusionan
+ * @property {number} [t] Instante (ms) en que se ejecutó
  */
 
 /**
@@ -69,10 +129,12 @@
  * Datos del usuario guardados en `localStorage` (`mapaDatos`) y exportables a JSON.
  * @typedef {Object} UserData
  * @property {number} schemaVersion Versión del esquema (ver `SCHEMA_VERSION`)
+ * @property {Category[]} categories
  * @property {Marker[]} markers
  * @property {RoutePoint[]} route
  * @property {number} scale Unidades de distancia por unidad de mapa
  * @property {string} unit Unidad de distancia (ver `DISTANCE_UNITS`)
+ * @property {UserLabels} labels
  * @property {number} nid Siguiente id libre para marcadores
  */
 
@@ -83,6 +145,7 @@
  * @property {boolean} scalebar
  * @property {boolean} markers
  * @property {boolean} hover
+ * @property {string[]} hiddenCategories Categorías ocultas en el mapa, la lista, el minimapa y la búsqueda
  */
 
 /**
@@ -129,8 +192,11 @@
  * @property {0|1} paletteMode 0 = pergamino, 1 = color
  * @property {UserData} userData Datos del usuario (null hasta `loadUserData`)
  * @property {ViewOptions} viewOptions (null hasta `loadUserData`)
- * @property {'marker'|'route'|null} activeTool
+ * @property {'marker'|'route'|'labels'|null} activeTool
  * @property {number|null} selectedMarkerId
+ * @property {string|null} selectedLabelId
+ * @property {{ recientes: string[], favoritos: string[] }} searchPrefs
+ * @property {Record<string, {key: string, ctrl?: boolean, shift?: boolean}>} shortcuts Atajos personalizados
  */
 
 export {};

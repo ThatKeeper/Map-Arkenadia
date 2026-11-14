@@ -1,11 +1,11 @@
 // src/ui/panels/handleMapTap.js
 import { showBiomeTip } from './showBiomeTip';
 import { WORLD_HEIGHT, WORLD_WIDTH } from '@/config';
+import { addLabel, findLabelAt } from '@/features/labels';
 import { addMarker, findMarkerAt } from '@/features/markers';
-import { saveUserData } from '@/services/storage';
+import { addRoutePoint } from '@/features/route';
 import { dom, session, viewport } from '@/state';
-import { openMarkerPopup, renderRouteList } from '@/ui/lists';
-import { requestRedraw } from '@/ui/loop';
+import { openLabelPopup, openMarkerPopup } from '@/ui/lists';
 
 /** Gestiona un toque o clic simple sobre el mapa. */
 export function handleMapTap(e) {
@@ -15,18 +15,18 @@ export function handleMapTap(e) {
     wx = (cx - viewport.panX) / viewport.scale,
     wy = (cy - viewport.panY) / viewport.scale;
   if (wx < 0 || wy < 0 || wx > WORLD_WIDTH || wy > WORLD_HEIGHT) return;
+  if (session.activeTool === 'labels') {
+    const hitLabel = findLabelAt(cx, cy);
+    openLabelPopup(hitLabel ? hitLabel.id : addLabel(wx, wy));
+    return;
+  }
   const hit = findMarkerAt(cx, cy);
   if (session.activeTool === 'route') {
-    session.userData.route.push(
-      hit ? { x: hit.x, y: hit.y, n: hit.n } : { x: Math.round(wx), y: Math.round(wy), n: '' },
-    );
-    saveUserData();
-    renderRouteList();
-    requestRedraw();
+    addRoutePoint(hit ? { x: hit.x, y: hit.y, n: hit.nombre } : { x: Math.round(wx), y: Math.round(wy), n: '' });
     return;
   }
   if (session.activeTool === 'marker' && !hit) {
-    addMarker(wx, wy);
+    openMarkerPopup(addMarker(wx, wy).id);
     return;
   }
   if (hit) {

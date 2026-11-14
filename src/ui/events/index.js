@@ -1,11 +1,20 @@
 // src/ui/events/index.js
 export { bindViewEvents } from './bindViewEvents';
+export { captureShortcut } from './captureShortcut';
 export { centerOnMinimapPoint } from './centerOnMinimapPoint';
+export { doRedo } from './doRedo';
+export { doUndo } from './doUndo';
 export { endPointer } from './endPointer';
+export { finishLabelDrag } from './finishLabelDrag';
+export { focusSearch } from './focusSearch';
+export { moveLabelDrag } from './moveLabelDrag';
 export { onKeyDown } from './onKeyDown';
 export { onPointerDown } from './onPointerDown';
 export { onPointerMove } from './onPointerMove';
 export { onPointerUp } from './onPointerUp';
 export { onVisibilityChange } from './onVisibilityChange';
 export { onWheel } from './onWheel';
+export { runShortcut } from './runShortcut';
 export { setTouchHint } from './setTouchHint';
+export { shortcutActions } from './shortcutActions';
+export { startLabelDrag } from './startLabelDrag';

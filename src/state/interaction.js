@@ -8,4 +8,10 @@ export const interaction = {
   tapCandidate: null,
   tipTimer: 0,
   miniDragging: false,
+  // Arrastre de una etiqueta: { id, dx, dy, sx, sy, moved } (dx/dy: desfase en el mundo; sx/sy: inicio en pantalla)
+  dragLabel: null,
+  // Atajo que espera una nueva combinación en el diálogo de ayuda
+  captureShortcut: null,
+  // Categoría abierta en su editor
+  editingCategoryId: null,
 };

@@ -1,9 +1,20 @@
 // src/ui/lists/index.js
+export { closeCategoryPopup } from './closeCategoryPopup';
+export { closeHelp } from './closeHelp';
+export { closeLabelPopup } from './closeLabelPopup';
 export { closeMarkerPopup } from './closeMarkerPopup';
+export { createIconSvg } from './createIconSvg';
 export { initMarkerIconPicker } from './initMarkerIconPicker';
 export { initPanels } from './initPanels';
+export { openCategoryPopup } from './openCategoryPopup';
+export { openHelp } from './openHelp';
+export { openLabelPopup } from './openLabelPopup';
 export { openMarkerPopup } from './openMarkerPopup';
 export { renderBiomeList } from './renderBiomeList';
+export { renderCategoryList } from './renderCategoryList';
+export { renderIconGrid } from './renderIconGrid';
 export { renderMarkerList } from './renderMarkerList';
 export { renderRouteList } from './renderRouteList';
+export { renderShortcutHelp } from './renderShortcutHelp';
+export { renderSuggestions } from './renderSuggestions';
 export { restoreSavedTab } from './restoreSavedTab';

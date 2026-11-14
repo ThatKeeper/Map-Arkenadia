@@ -1,10 +1,9 @@
-// @ts-check
 // src/ui/render/drawLabel.js
 import { drawSpacedText } from './drawSpacedText';
 import { getLabelAlpha } from './getLabelAlpha';
 import { getLabelFont } from './getLabelFont';
-import { getLabelFontSize } from './getLabelFontSize';
 import { getLetterWidths } from './getLetterWidths';
+import { getLabelBox, getLabelFontSize } from '@/features/labels';
 import { dom } from '@/state';
 
 /**
@@ -16,10 +15,12 @@ import { dom } from '@/state';
  * @param {string} kind tipo de etiqueta
  * @param {number} minScale zoom mínimo
  * @param {number} rotation radianes
+ * @param {import('../../types').EffectiveLabel} [selected] si se pasa, se marca como seleccionada
+ * @param {number} [sizeMul] multiplicador de tamaño
  */
-export function drawLabel(P, text, x, y, kind, minScale, rotation) {
+export function drawLabel(P, text, x, y, kind, minScale, rotation, selected, sizeMul = 1) {
   const alpha = getLabelAlpha(minScale, kind),
-    fs = getLabelFontSize(kind),
+    fs = getLabelFontSize(kind, sizeMul),
     sp = kind === 'c' ? fs * 0.14 : kind === 's' ? fs * 0.45 : 0;
   dom.ctx.save();
   dom.ctx.translate(x, y);
@@ -35,6 +36,15 @@ export function drawLabel(P, text, x, y, kind, minScale, rotation) {
     dom.ctx.textAlign = 'center';
     dom.ctx.strokeText(text, 0, 0);
     dom.ctx.fillText(text, 0, 0);
+  }
+  if (selected) {
+    const { halfW, halfH } = getLabelBox(selected);
+    dom.ctx.globalAlpha = 1;
+    dom.ctx.setLineDash([fs * 0.25, fs * 0.15]);
+    dom.ctx.strokeStyle = '#2a6fb0';
+    dom.ctx.lineWidth = fs * 0.06;
+    dom.ctx.strokeRect(-halfW - fs * 0.15, -halfH, 2 * halfW + fs * 0.3, 2 * halfH);
+    dom.ctx.setLineDash([]);
   }
   dom.ctx.restore();
 }

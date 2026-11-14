@@ -1,7 +1,8 @@
 // src/ui/render/drawMinimap.js
 import { worldToMiniX } from './worldToMiniX';
 import { worldToMiniY } from './worldToMiniY';
-import { MARKER_ICONS, MINI_HEIGHT, MINI_WIDTH, TAU } from '@/config';
+import { MINI_HEIGHT, MINI_WIDTH, TAU } from '@/config';
+import { getVisibleMarkers } from '@/features/markers';
 import { dom, loop, session, tilesState, viewport } from '@/state';
 
 /** Dibuja el minimapa con ruta, marcadores y zona visible. */
@@ -24,16 +25,18 @@ export function drawMinimap() {
     dom.miniCtx.lineWidth = 1.5;
     dom.miniCtx.stroke();
   }
-  if (session.viewOptions.markers)
-    for (const m of session.userData.markers) {
+  if (session.viewOptions.markers) {
+    const colors = new Map(session.userData.categories.map((c) => [c.id, c.color]));
+    for (const m of getVisibleMarkers()) {
       dom.miniCtx.beginPath();
       dom.miniCtx.arc(worldToMiniX(m.x), worldToMiniY(m.y), 2.6, 0, TAU);
-      dom.miniCtx.fillStyle = MARKER_ICONS[m.i][1];
+      dom.miniCtx.fillStyle = colors.get(m.categoria) || '#6b4a2c';
       dom.miniCtx.fill();
       dom.miniCtx.strokeStyle = '#fff';
       dom.miniCtx.lineWidth = 1;
       dom.miniCtx.stroke();
     }
+  }
   const x0 = worldToMiniX(-viewport.panX / viewport.scale),
     y0 = worldToMiniY(-viewport.panY / viewport.scale),
     x1 = worldToMiniX((viewport.width - viewport.panX) / viewport.scale),

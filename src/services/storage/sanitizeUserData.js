@@ -1,6 +1,9 @@
 // @ts-check
 // src/services/storage/sanitizeUserData.js
-import { DISTANCE_UNITS, MARKER_ICONS, SCHEMA_VERSION, WORLD_HEIGHT, WORLD_WIDTH } from '@/config';
+import { sanitizeCategories } from './sanitizeCategories';
+import { sanitizeLabels } from './sanitizeLabels';
+import { sanitizeMarkers } from './sanitizeMarkers';
+import { DISTANCE_UNITS, SCHEMA_VERSION } from '@/config';
 import { migrateUserData } from '@/services/migrations';
 import { isFiniteNumber, truncate } from '@/utils';
 
@@ -12,27 +15,25 @@ import { isFiniteNumber, truncate } from '@/utils';
  */
 export function sanitizeUserData(input) {
   const j = migrateUserData(input);
+  const src = j && typeof j === 'object' && !Array.isArray(j) ? j : {};
+  const categories = sanitizeCategories(src.categories);
+  const { markers, nid } = sanitizeMarkers(src.markers, categories);
   /** @type {import('../../types').UserData} */
-  const d = { schemaVersion: SCHEMA_VERSION, markers: [], route: [], scale: 1, unit: 'leguas', nid: 1 };
-  if (!j || typeof j !== 'object') return d;
-  if (Array.isArray(j.markers))
-    for (const m of j.markers.slice(0, 500))
-      if (m && isFiniteNumber(m.x) && isFiniteNumber(m.y)) {
-        const i = m.i | 0;
-        d.markers.push({
-          id: d.nid++,
-          x: Math.max(0, Math.min(WORLD_WIDTH, m.x)),
-          y: Math.max(0, Math.min(WORLD_HEIGHT, m.y)),
-          n: truncate(m.n, 40) || 'Marcador',
-          i: i >= 0 && i < MARKER_ICONS.length ? i : 0,
-          t: truncate(m.t, 200),
-        });
-      }
-  if (Array.isArray(j.route))
-    for (const p of j.route.slice(0, 500))
+  const d = {
+    schemaVersion: SCHEMA_VERSION,
+    categories,
+    markers,
+    route: [],
+    labels: sanitizeLabels(src.labels),
+    scale: 1,
+    unit: 'leguas',
+    nid,
+  };
+  if (Array.isArray(src.route))
+    for (const p of src.route.slice(0, 500))
       if (p && isFiniteNumber(p.x) && isFiniteNumber(p.y))
         d.route.push({ x: p.x, y: p.y, n: truncate(p.n, 40) });
-  if (isFiniteNumber(j.scale) && j.scale > 0 && j.scale < 1e6) d.scale = j.scale;
-  if (DISTANCE_UNITS.includes(j.unit)) d.unit = j.unit;
+  if (isFiniteNumber(src.scale) && src.scale > 0 && src.scale < 1e6) d.scale = src.scale;
+  if (DISTANCE_UNITS.includes(src.unit)) d.unit = src.unit;
   return d;
 }

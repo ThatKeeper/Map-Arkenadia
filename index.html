@@ -23,25 +23,31 @@
         aria-controls="dock"
         aria-label="Herramientas"
         title="Herramientas"
+        data-shortcut="togglePanel"
       >
         ☰
       </button>
-      <button id="zi" aria-label="Acercar" title="Acercar">+</button
-      ><button id="zo" aria-label="Alejar" title="Alejar">−</button
+      <button id="zi" aria-label="Acercar" title="Acercar" data-shortcut="zoomIn">+</button
+      ><button id="zo" aria-label="Alejar" title="Alejar" data-shortcut="zoomOut">−</button
       ><button
         id="zr"
         aria-label="Ver todo el mapa"
         title="Ver todo el mapa"
+        data-shortcut="fitAll"
         style="font-size: 22px"
       >
         ⌂</button
-      ><span id="pct">100%</span>
+      ><span id="pct">100%</span
+      ><button id="undo" aria-label="Deshacer" title="Deshacer" data-shortcut="undo" disabled>↶</button
+      ><button id="redo" aria-label="Rehacer" title="Rehacer" data-shortcut="redo" disabled>↷</button
+      ><button id="helpBtn" aria-label="Atajos de teclado" title="Atajos de teclado" data-shortcut="help">?</button>
     </div>
     <div class="hud" id="dock" hidden>
       <div id="tabs" role="tablist" aria-label="Herramientas">
         <button role="tab" data-t="ver">Ver</button
         ><button role="tab" data-t="marc">Marcas</button
         ><button role="tab" data-t="ruta">Ruta</button
+        ><button role="tab" data-t="etq" title="Etiquetas del mapa">Etiq.</button
         ><button role="tab" data-t="bio">Biomas</button
         ><button
           role="tab"
@@ -58,12 +64,16 @@
         <input
           type="search"
           id="q"
-          list="places"
-          placeholder="Buscar lugar o marcador…"
+          role="combobox"
+          aria-autocomplete="list"
+          aria-expanded="false"
+          aria-controls="sugg"
+          data-shortcut="search"
+          placeholder="Buscar lugar, marcador o categoría…"
           autocomplete="off"
           aria-label="Buscar lugar"
         />
-        <datalist id="places"></datalist>
+        <ul id="sugg" role="listbox" aria-label="Sugerencias" hidden></ul>
         <hr />
         <label><input type="checkbox" data-v="mini" /> Minimapa</label>
         <label
@@ -85,13 +95,20 @@
       </section>
       <section data-p="marc" hidden>
         <div class="row">
-          <button class="btn" id="tMark" aria-pressed="false">
+          <button class="btn" id="tMark" aria-pressed="false" data-shortcut="toolMarker">
             📍 Colocar marcador
           </button>
         </div>
         <p class="small" id="mHelp">
           Pulsa el botón y toca el mapa. Toca un marcador para editarlo.
         </p>
+        <h2>Categorías</h2>
+        <div class="row">
+          <button class="btn" id="catAll">Mostrar todas</button
+          ><button class="btn" id="catNew">+ Nueva</button>
+        </div>
+        <div id="catList" aria-label="Categorías"></div>
+        <hr />
         <ul id="mList" aria-label="Marcadores"></ul>
         <hr />
         <div class="row">
@@ -112,14 +129,14 @@
       </section>
       <section data-p="ruta" hidden>
         <div class="row">
-          <button class="btn" id="tRoute" aria-pressed="false">
+          <button class="btn" id="tRoute" aria-pressed="false" data-shortcut="toolRoute">
             🧭 Trazar ruta
           </button>
         </div>
         <p class="small" id="rSum">Añade al menos dos puntos.</p>
         <ul id="rList" aria-label="Puntos de la ruta"></ul>
         <div class="row">
-          <button class="btn" id="rUndo">Deshacer</button
+          <button class="btn" id="rUndo">Quitar último</button
           ><button class="btn" id="rRev">Invertir</button
           ><button class="btn" id="rClear">Borrar</button>
         </div>
@@ -137,6 +154,19 @@
             <option>km</option>
             <option>millas</option>
           </select>
+        </div>
+      </section>
+      <section data-p="etq" hidden>
+        <div class="row">
+          <button class="btn" id="tLabels" aria-pressed="false" data-shortcut="toolLabels">
+            ✎ Editar etiquetas
+          </button>
+        </div>
+        <p class="small" id="lHelp">
+          Toca una etiqueta para editarla y arrástrala para moverla. Toca un hueco del mapa para crear una nueva.
+        </p>
+        <div class="row">
+          <button class="btn" id="lRestore">Restaurar originales</button>
         </div>
       </section>
       <section data-p="bio" hidden>
@@ -188,11 +218,19 @@
     <div class="hud" id="pop" hidden role="dialog" aria-label="Editar marcador">
       <input
         id="pName"
+        list="pNames"
         maxlength="40"
         placeholder="Nombre"
+        autocomplete="off"
         aria-label="Nombre del marcador"
       />
-      <div id="pIcons"></div>
+      <datalist id="pNames"></datalist>
+      <div class="row2">
+        <select id="pCat" aria-label="Categoría"></select>
+        <select id="pVis" aria-label="Visibilidad"></select>
+      </div>
+      <input type="search" id="pIconQ" placeholder="Buscar icono…" aria-label="Buscar icono" />
+      <div id="pIcons" class="icons" role="listbox" aria-label="Iconos"></div>
       <textarea
         id="pNote"
         rows="2"
@@ -203,6 +241,33 @@
       <div class="row">
         <button id="pGo">Centrar</button><button id="pDel">Borrar</button
         ><button id="pOk">Listo</button>
+      </div>
+    </div>
+    <div class="hud" id="cpop" hidden role="dialog" aria-label="Editar categoría">
+      <input id="cName" maxlength="30" placeholder="Nombre" aria-label="Nombre de la categoría" />
+      <label class="rng">Color <input type="color" id="cColor" aria-label="Color" /></label>
+      <input type="search" id="cIconQ" placeholder="Buscar icono…" aria-label="Buscar icono" />
+      <div id="cIcons" class="icons" role="listbox" aria-label="Iconos"></div>
+      <div class="row">
+        <button id="cDel">Borrar</button><button id="cOk">Listo</button>
+      </div>
+    </div>
+    <div class="hud" id="lpop" hidden role="dialog" aria-label="Editar etiqueta">
+      <input id="lText" maxlength="60" placeholder="Texto" aria-label="Texto de la etiqueta" />
+      <select id="lStyle" aria-label="Estilo"></select>
+      <label class="rng">Tamaño <input type="range" id="lSize" min="0.4" max="3" step="0.05" /></label>
+      <label class="rng">Giro <input type="range" id="lRot" min="-180" max="180" step="1" /></label>
+      <div class="row">
+        <button id="lReset">Restaurar</button><button id="lDel">Borrar</button
+        ><button id="lOk">Listo</button>
+      </div>
+    </div>
+    <div class="hud" id="helpd" hidden role="dialog" aria-label="Atajos de teclado">
+      <h2>Atajos de teclado</h2>
+      <div id="helpList"></div>
+      <p class="small" id="helpMsg">Pulsa «Cambiar» y luego la combinación nueva (Esc cancela).</p>
+      <div class="row">
+        <button id="helpReset">Restaurar</button><button id="helpOk">Cerrar</button>
       </div>
     </div>
     <div class="hud" id="tip" hidden></div>

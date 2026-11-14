@@ -16,11 +16,19 @@ export {
   MINI_WIDTH,
   MINI_HEIGHT,
 } from './constants';
-export { MARKER_ICONS } from './icons';
+export { INK_ICONS, DEFAULT_ICON_ID } from './inkIcons';
+export {
+  DEFAULT_CATEGORIES,
+  FALLBACK_CATEGORY_ID,
+  LABEL_STYLES,
+  LEGACY_ICON_MAP,
+  VISIBILITIES,
+} from './markerCategories';
 export { RAW_LABELS, LABELS, LABEL_FONT_SIZES } from './labels';
 export { CLASS_MAP_IMAGE } from './mapImage';
 export { PALETTES } from './palettes';
 export { PRESETS, TIERS, OPTION_KEYS, AUTO_DESC } from './presets';
 export { SCHEMA_VERSION } from './schema';
+export { DEFAULT_SHORTCUTS } from './shortcuts';
 export { STAINS } from './stains';
 export { DISTANCE_UNITS } from './units';

@@ -1,10 +1,9 @@
 // src/ui/controls/bindDataTransferControls.js
-import { sanitizeUserData, saveUserData } from '@/services/storage';
+import { clearHistory } from '@/features/history';
+import { sanitizeUserData } from '@/services/storage';
 import { session } from '@/state';
-import { closeMarkerPopup, renderMarkerList, renderRouteList } from '@/ui/lists';
-import { requestRedraw } from '@/ui/loop';
 import { showToast } from '@/ui/panels';
-import { byId } from '@/utils';
+import { byId, emit } from '@/utils';
 
 /** Conecta exportar e importar datos. */
 export function bindDataTransferControls() {
@@ -27,15 +26,13 @@ export function bindDataTransferControls() {
     if (!f) return;
     try {
       const d = sanitizeUserData(JSON.parse(await f.text()));
-      if (!d.markers.length && !d.route.length) throw 0;
-      if (session.userData.markers.length || session.userData.route.length)
-        if (!confirm('Esto reemplaza tus marcadores y ruta actuales. ¿Continuar?')) return;
+      const hasData = (u) => u.markers.length || u.route.length || u.labels.custom.length || Object.keys(u.labels.edits).length;
+      if (!hasData(d)) throw 0;
+      if (hasData(session.userData))
+        if (!confirm('Esto reemplaza tus marcadores, ruta y etiquetas actuales. ¿Continuar?')) return;
       session.userData = d;
-      saveUserData();
-      renderMarkerList();
-      renderRouteList();
-      closeMarkerPopup();
-      requestRedraw();
+      clearHistory();
+      emit('userdata:changed', { keys: Object.keys(d) });
       showToast('Datos importados');
     } catch (err) {
       showToast('Archivo no válido');

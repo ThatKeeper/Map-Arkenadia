@@ -1,14 +1,19 @@
 // src/ui/lists/initPanels.js
 import { initMarkerIconPicker } from './initMarkerIconPicker';
 import { renderBiomeList } from './renderBiomeList';
+import { renderCategoryList } from './renderCategoryList';
 import { renderMarkerList } from './renderMarkerList';
 import { renderRouteList } from './renderRouteList';
 import { restoreSavedTab } from './restoreSavedTab';
 import {
+  bindCategoryControls,
   bindDataTransferControls,
   bindDockControls,
   bindFullscreenButton,
+  bindHelpControls,
+  bindHistoryControls,
   bindHoverTip,
+  bindLabelControls,
   bindMarkerListControls,
   bindMarkerPopupControls,
   bindRouteControls,
@@ -23,6 +28,10 @@ export function initPanels() {
   restoreSavedTab();
   bindMarkerPopupControls();
   bindMarkerListControls();
+  bindCategoryControls();
+  bindLabelControls();
+  bindHistoryControls();
+  bindHelpControls();
   bindRouteControls();
   bindDataTransferControls();
   bindSearchControls();
@@ -30,6 +39,7 @@ export function initPanels() {
   bindHoverTip();
   syncViewOptions();
   renderMarkerList();
+  renderCategoryList();
   renderRouteList();
   renderBiomeList();
   sizeMinimap();

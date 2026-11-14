@@ -29,4 +29,10 @@ export const session = {
   activeTool: null,
   // Marcador abierto en el editor
   selectedMarkerId: null,
+  // Etiqueta abierta en el editor
+  selectedLabelId: null,
+  // Búsquedas recientes y favoritas
+  searchPrefs: { recientes: [], favoritos: [] },
+  // Atajos personalizados: id → { key, ctrl, shift }
+  shortcuts: {},
 };

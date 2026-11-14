@@ -1,10 +1,12 @@
 // src/ui/events/onPointerMove.js
+import { moveLabelDrag } from './moveLabelDrag';
 import { clampZoom, setZoomAnchor } from '@/features/navigation';
 import { activePointers, dom, interaction, viewport } from '@/state';
 import { requestRedraw } from '@/ui/loop';
 
 /** Arrastre con un puntero o pellizco con dos. */
 export function onPointerMove(e) {
+  if (interaction.dragLabel) return moveLabelDrag(e);
   if (!activePointers.has(e.pointerId)) return;
   const o = activePointers.get(e.pointerId);
   if (activePointers.size === 1) {

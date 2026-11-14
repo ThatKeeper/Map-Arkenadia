@@ -13,6 +13,9 @@
 #toast[hidden],
 #chip[hidden],
 #pop[hidden],
+#cpop[hidden],
+#lpop[hidden],
+#helpd[hidden],
 #tip[hidden],
 #mini[hidden] {
   display: none;
@@ -94,6 +97,9 @@
 }
 #dock .btn,
 #pop button,
+#cpop button,
+#lpop button,
+#helpd button,
 #chip button {
   font:
     700 20px "Caveat",
@@ -110,7 +116,10 @@
   border-style: solid;
 }
 #dock .row,
-#pop .row {
+#pop .row,
+#cpop .row,
+#lpop .row,
+#helpd .row {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
@@ -126,6 +135,11 @@
 #dock input[type="number"],
 #dock select,
 #pop input,
+#cpop input[type="text"],
+#cpop input:not([type]),
+#cpop input[type="search"],
+#lpop input[type="text"],
+#lpop input:not([type]),
 #pop textarea {
   width: 100%;
   box-sizing: border-box;

@@ -6,6 +6,7 @@ import { byId } from '@/utils';
 /** Cierra el editor de marcador. */
 export function closeMarkerPopup() {
   byId('pop').hidden = true;
+  byId('pIconQ').value = '';
   session.selectedMarkerId = null;
   requestRedraw();
 }

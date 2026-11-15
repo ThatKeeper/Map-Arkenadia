@@ -17,7 +17,7 @@ export function sanitizeUserData(input) {
   const j = migrateUserData(input);
   const src = j && typeof j === 'object' && !Array.isArray(j) ? j : {};
   const categories = sanitizeCategories(src.categories);
-  const { markers, nid } = sanitizeMarkers(src.markers, categories);
+  const { markers, nid } = sanitizeMarkers(src.markers, categories, src.nid);
   /** @type {import('../../types').UserData} */
   const d = {
     schemaVersion: SCHEMA_VERSION,

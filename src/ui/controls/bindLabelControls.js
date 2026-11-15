@@ -21,6 +21,10 @@ export function bindLabelControls() {
     const l = current();
     if (l) updateLabel(l.id, { estilo: e.target.value });
   };
+  byId('lVis').onchange = (e) => {
+    const l = current();
+    if (l) updateLabel(l.id, { visibilidad: e.target.value });
+  };
   byId('lSize').oninput = (e) => {
     const l = current();
     if (l) updateLabel(l.id, { tam: parseFloat(e.target.value) });

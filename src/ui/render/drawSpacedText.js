@@ -10,26 +10,27 @@ import { supportsLetterSpacing } from '@/utils';
  * @param {{sum: number, n: number, w: number[]}} letters anchos de letra normalizados
  * @param {number} fontSize
  * @param {number} spacing separación entre letras (px)
+ * @param {CanvasRenderingContext2D} [ctx] contexto de destino (por defecto, el del mapa)
  */
-export function drawSpacedText(text, letters, fontSize, spacing) {
+export function drawSpacedText(text, letters, fontSize, spacing, ctx = dom.ctx) {
   const total = letters.sum * fontSize + spacing * (letters.n - 1),
     start = -total / 2;
   if (supportsLetterSpacing()) {
-    dom.ctx.letterSpacing = spacing + 'px';
-    dom.ctx.strokeText(text, start, 0);
-    dom.ctx.fillText(text, start, 0);
+    ctx.letterSpacing = spacing + 'px';
+    ctx.strokeText(text, start, 0);
+    ctx.fillText(text, start, 0);
     return;
   }
   let i = 0,
     xx = start;
   for (const ch of text) {
-    dom.ctx.strokeText(ch, xx, 0);
+    ctx.strokeText(ch, xx, 0);
     xx += letters.w[i++] * fontSize + spacing;
   }
   i = 0;
   xx = start;
   for (const ch of text) {
-    dom.ctx.fillText(ch, xx, 0);
+    ctx.fillText(ch, xx, 0);
     xx += letters.w[i++] * fontSize + spacing;
   }
 }

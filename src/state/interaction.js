@@ -14,4 +14,8 @@ export const interaction = {
   captureShortcut: null,
   // Categoría abierta en su editor
   editingCategoryId: null,
+  // Modo del diálogo de PIN ('unlock' | 'set' | 'change' | 'remove')
+  pinMode: null,
+  // Exportación de imagen en curso: { cancel: boolean }
+  exporting: null,
 };

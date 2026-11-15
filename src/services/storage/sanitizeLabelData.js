@@ -1,9 +1,10 @@
 // @ts-check
 // src/services/storage/sanitizeLabelData.js
-import { LABEL_STYLES, WORLD_HEIGHT, WORLD_WIDTH } from '@/config';
+import { LABEL_STYLES, VISIBILITIES, WORLD_HEIGHT, WORLD_WIDTH } from '@/config';
 import { clamp, isFiniteNumber, truncate } from '@/utils';
 
 const STYLE_IDS = new Set(LABEL_STYLES.map((s) => s[0]));
+const VIS_IDS = new Set(VISIBILITIES.map((v) => v[0]));
 
 /**
  * Depura los campos editables de una etiqueta; solo conserva los válidos.
@@ -21,5 +22,7 @@ export function sanitizeLabelData(d) {
   if (isFiniteNumber(d.rot)) out.rot = clamp(d.rot, -Math.PI, Math.PI);
   if (STYLE_IDS.has(d.estilo)) out.estilo = d.estilo;
   if (d.oculta === true) out.oculta = true;
+  if (VIS_IDS.has(d.visibilidad) && d.visibilidad !== 'todos') out.visibilidad = d.visibilidad;
+  if (isFiniteNumber(d.actualizado) && d.actualizado >= 0) out.actualizado = d.actualizado;
   return out;
 }

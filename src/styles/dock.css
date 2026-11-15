@@ -16,6 +16,10 @@
 #cpop[hidden],
 #lpop[hidden],
 #helpd[hidden],
+#pind[hidden],
+#sharedd[hidden],
+#expd[hidden],
+#roleBar[hidden],
 #tip[hidden],
 #mini[hidden] {
   display: none;
@@ -100,6 +104,9 @@
 #cpop button,
 #lpop button,
 #helpd button,
+#pind button,
+#sharedd button,
+#expd button,
 #chip button {
   font:
     700 20px "Caveat",
@@ -119,7 +126,10 @@
 #pop .row,
 #cpop .row,
 #lpop .row,
-#helpd .row {
+#helpd .row,
+#pind .row,
+#sharedd .row,
+#expd .row {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
@@ -137,6 +147,7 @@
 #pop input,
 #cpop input[type="text"],
 #cpop input:not([type]),
+#pind input,
 #cpop input[type="search"],
 #lpop input[type="text"],
 #lpop input:not([type]),

@@ -8,7 +8,8 @@
  * @typedef {Object} Marker
  * @property {number} id Identificador único dentro de `userData`
  * @property {string} nombre Nombre (máx. 40 caracteres)
- * @property {string} nota Nota (máx. 200 caracteres)
+ * @property {string} nota Nota pública (máx. 200 caracteres)
+ * @property {string} notaDm Nota privada del DM (máx. 500 caracteres); nunca se exporta ni se ve en modo jugador
  * @property {number} x Posición X en el mundo (0..WORLD_WIDTH)
  * @property {number} y Posición Y en el mundo (0..WORLD_HEIGHT)
  * @property {string} categoria Id de una categoría de `userData.categories`
@@ -39,6 +40,8 @@
  * @property {number} [rot] Rotación en radianes
  * @property {string} [estilo] Tipo de etiqueta ('c' | 'r' | 's' | 'x' | 'n')
  * @property {boolean} [oculta] Etiqueta original borrada
+ * @property {'todos'|'dm'|'mio'} [visibilidad] Quién la ve (por defecto, todos)
+ * @property {number} [actualizado] Marca de tiempo (ms) de la última edición
  */
 
 /**
@@ -60,6 +63,8 @@
  * @property {number} minZoom
  * @property {number} rot
  * @property {number} tam
+ * @property {'todos'|'dm'|'mio'} visibilidad
+ * @property {number} actualizado
  * @property {boolean} original
  * @property {boolean} editada
  */
@@ -195,6 +200,8 @@
  * @property {'marker'|'route'|'labels'|null} activeTool
  * @property {number|null} selectedMarkerId
  * @property {string|null} selectedLabelId
+ * @property {'dm'|'jugador'} role Rol activo
+ * @property {{ salt: string, hash: string }|null} pin PIN del DM (solo su hash); null si no hay
  * @property {{ recientes: string[], favoritos: string[] }} searchPrefs
  * @property {Record<string, {key: string, ctrl?: boolean, shift?: boolean}>} shortcuts Atajos personalizados
  */

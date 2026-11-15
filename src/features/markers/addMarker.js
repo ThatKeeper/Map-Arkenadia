@@ -3,6 +3,7 @@
 import { FALLBACK_CATEGORY_ID } from '@/config';
 import { isCategoryHidden, setCategoryHidden } from '@/features/categories';
 import { updateUserData } from '@/features/history';
+import { getDefaultVisibility } from '@/features/roles';
 import { session } from '@/state';
 
 /**
@@ -30,7 +31,8 @@ export function addMarker(x, y, categoryId) {
       y: Math.round(y),
       categoria: cat.id,
       icono: cat.icono,
-      visibilidad: 'todos',
+      notaDm: '',
+      visibilidad: getDefaultVisibility(),
       creado: now,
       actualizado: now,
     });

@@ -20,6 +20,8 @@ function migrateMarker(m) {
     visibilidad: m.visibilidad !== undefined ? m.visibilidad : 'todos',
     creado: m.creado !== undefined ? m.creado : 0,
     actualizado: m.actualizado !== undefined ? m.actualizado : 0,
+    // Campos de versiones posteriores que ya vengan en el dato (datos sin `schemaVersion`) se respetan.
+    ...(m.notaDm !== undefined ? { notaDm: m.notaDm } : {}),
   };
 }
 

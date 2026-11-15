@@ -9,6 +9,7 @@ import {
   bindCategoryControls,
   bindDataTransferControls,
   bindDockControls,
+  bindExportControls,
   bindFullscreenButton,
   bindHelpControls,
   bindHistoryControls,
@@ -16,6 +17,7 @@ import {
   bindLabelControls,
   bindMarkerListControls,
   bindMarkerPopupControls,
+  bindRoleControls,
   bindRouteControls,
   bindSearchControls,
 } from '@/ui/controls';
@@ -32,6 +34,8 @@ export function initPanels() {
   bindLabelControls();
   bindHistoryControls();
   bindHelpControls();
+  bindExportControls();
+  bindRoleControls();
   bindRouteControls();
   bindDataTransferControls();
   bindSearchControls();

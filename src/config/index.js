@@ -28,6 +28,24 @@ export { RAW_LABELS, LABELS, LABEL_FONT_SIZES } from './labels';
 export { CLASS_MAP_IMAGE } from './mapImage';
 export { PALETTES } from './palettes';
 export { PRESETS, TIERS, OPTION_KEYS, AUTO_DESC } from './presets';
+export {
+  DEFAULT_EXPORT_OPTIONS,
+  EXPORT_FACTORS,
+  EXPORT_FULL_BASE_ZOOM,
+  EXPORT_GRID_STEP,
+  EXPORT_MAX_PIXELS_DESKTOP,
+  EXPORT_MAX_PIXELS_MOBILE,
+  EXPORT_STRIP_PIXELS,
+} from './exportOptions';
+export {
+  DEFAULT_ROLE,
+  PIN_MAX_LENGTH,
+  PIN_MIN_LENGTH,
+  PIN_WARNING,
+  PLAYER_FILE_FORMAT,
+  PLAYER_FILE_VERSION,
+  ROLES,
+} from './roles';
 export { SCHEMA_VERSION } from './schema';
 export { DEFAULT_SHORTCUTS } from './shortcuts';
 export { STAINS } from './stains';

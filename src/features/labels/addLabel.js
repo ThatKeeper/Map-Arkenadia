@@ -1,6 +1,7 @@
 // @ts-check
 // src/features/labels/addLabel.js
 import { updateUserData } from '@/features/history';
+import { getDefaultVisibility } from '@/features/roles';
 import { session } from '@/state';
 
 /**
@@ -14,7 +15,12 @@ import { session } from '@/state';
 export function addLabel(x, y, texto = 'Nueva etiqueta', estilo = 'x') {
   const id = 'c' + session.userData.labels.nid;
   updateUserData('Etiqueta creada', ['labels'], (d) => {
-    d.labels.custom.push({ id, texto, x: Math.round(x), y: Math.round(y), tam: 1, rot: 0, estilo });
+    const visibilidad = getDefaultVisibility();
+    d.labels.custom.push({
+      id, texto, x: Math.round(x), y: Math.round(y), tam: 1, rot: 0, estilo,
+      ...(visibilidad === 'todos' ? {} : { visibilidad }),
+      actualizado: Date.now(),
+    });
     d.labels.nid += 1;
   });
   return id;

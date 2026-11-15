@@ -1,6 +1,6 @@
 // @ts-check
 // src/features/labels/findLabelAt.js
-import { getEffectiveLabels } from './getEffectiveLabels';
+import { getVisibleLabels } from './getVisibleLabels';
 import { getLabelBox } from './getLabelBox';
 import { viewport } from '@/state';
 
@@ -15,7 +15,7 @@ export function findLabelAt(cx, cy) {
   const wx = (cx - viewport.panX) / viewport.scale,
     wy = (cy - viewport.panY) / viewport.scale,
     pad = 8 / viewport.scale,
-    list = getEffectiveLabels();
+    list = getVisibleLabels();
   for (let i = list.length - 1; i >= 0; i--) {
     const l = list[i];
     if (viewport.scale < l.minZoom) continue;

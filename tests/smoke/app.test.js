@@ -80,8 +80,8 @@ describe('arnés de humo de la app', () => {
     tap(view, 600, 380);
     await settle();
     expect(app.session.userData.markers).toHaveLength(1);
-    expect(app.session.userData.schemaVersion).toBe(2);
-    expect(app.session.userData.markers[0]).toMatchObject({ categoria: 'nota', icono: 'pin', visibilidad: 'todos' });
+    expect(app.session.userData.schemaVersion).toBe(3);
+    expect(app.session.userData.markers[0]).toMatchObject({ categoria: 'nota', icono: 'pin', visibilidad: 'todos', notaDm: '' });
     expect(fingerprint()).toMatchSnapshot();
   });
 

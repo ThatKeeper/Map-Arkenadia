@@ -22,7 +22,7 @@ describe('sanitizeUserData', () => {
     const d = sanitizeUserData({ markers: [marker({ id: 5 }), marker({ id: 9, nombre: 'Faro' })] });
     expect(d.markers.map((m) => m.id)).toEqual([5, 9]);
     expect(d.markers[0]).toEqual({
-      id: 5, nombre: 'Puerto', nota: '', x: 10, y: 20, categoria: 'ciudad', icono: 'ancla',
+      id: 5, nombre: 'Puerto', nota: '', notaDm: '', x: 10, y: 20, categoria: 'ciudad', icono: 'ancla',
       visibilidad: 'todos', creado: 0, actualizado: 0,
     });
     expect(d.nid).toBe(10);
@@ -124,6 +124,26 @@ describe('sanitizeUserData', () => {
     expect(d.labels.nid).toBe(4);
   });
 
+  it('conserva y recorta la nota privada del DM', () => {
+    const d = sanitizeUserData({ markers: [marker({ notaDm: 'z'.repeat(900) }), marker({ notaDm: 'secreto' })] });
+    expect(d.markers[0].notaDm).toHaveLength(500);
+    expect(d.markers[1].notaDm).toBe('secreto');
+  });
+
+  it('depura la visibilidad y la fecha de las etiquetas', () => {
+    const d = sanitizeUserData({
+      labels: {
+        edits: { o0: { visibilidad: 'dm', actualizado: 50 }, o1: { visibilidad: 'todos' }, o2: { visibilidad: 'raro', actualizado: -1 } },
+        custom: [{ id: 'c1', texto: 'A', x: 1, y: 1, visibilidad: 'mio', actualizado: 9 }],
+        nid: 2,
+      },
+    });
+    expect(d.labels.edits.o0).toEqual({ visibilidad: 'dm', actualizado: 50 });
+    expect(d.labels.edits.o1).toBe(undefined);
+    expect(d.labels.edits.o2).toBe(undefined);
+    expect(d.labels.custom[0]).toMatchObject({ visibilidad: 'mio', actualizado: 9 });
+  });
+
   it('es idempotente: sanitizar dos veces da lo mismo', () => {
     const once = sanitizeUserData({
       markers: [marker({ id: 2, creado: 5 })],
@@ -143,7 +163,7 @@ describe('sanitizeUserData', () => {
       unit: 'millas',
       nid: 5,
     });
-    expect(d.schemaVersion).toBe(2);
+    expect(d.schemaVersion).toBe(3);
     expect(d.markers[0]).toMatchObject({ id: 4, nombre: 'Ciudad', nota: 'capital', x: 100, y: 200, categoria: 'ciudad', icono: 'castillo' });
     expect(d.route).toHaveLength(1);
     expect([d.scale, d.unit]).toEqual([5, 'millas']);

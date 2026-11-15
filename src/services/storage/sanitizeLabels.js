@@ -12,6 +12,7 @@ export function sanitizeLabels(input) {
   /** @type {import('../../types').UserLabels} */
   const out = { edits: {}, custom: [], nid: 1 };
   if (!input || typeof input !== 'object') return out;
+  if (Number.isInteger(input.nid) && input.nid > 0) out.nid = input.nid;
   if (input.edits && typeof input.edits === 'object')
     for (const id of Object.keys(input.edits)) {
       const m = /^o(\d+)$/.exec(id);

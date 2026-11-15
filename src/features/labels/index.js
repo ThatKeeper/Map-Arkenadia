@@ -4,6 +4,7 @@ export { findLabelAt } from './findLabelAt';
 export { getEffectiveLabels } from './getEffectiveLabels';
 export { getLabelBox } from './getLabelBox';
 export { getLabelById } from './getLabelById';
+export { getVisibleLabels } from './getVisibleLabels';
 export { getLabelFontSize } from './getLabelFontSize';
 export { removeLabel } from './removeLabel';
 export { restoreLabel } from './restoreLabel';

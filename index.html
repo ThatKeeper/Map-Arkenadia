@@ -40,8 +40,11 @@
       ><span id="pct">100%</span
       ><button id="undo" aria-label="Deshacer" title="Deshacer" data-shortcut="undo" disabled>↶</button
       ><button id="redo" aria-label="Rehacer" title="Rehacer" data-shortcut="redo" disabled>↷</button
-      ><button id="helpBtn" aria-label="Atajos de teclado" title="Atajos de teclado" data-shortcut="help">?</button>
+      ><button id="helpBtn" aria-label="Atajos de teclado" title="Atajos de teclado" data-shortcut="help">?</button
+      ><button id="roleBtn" class="role-dm" data-shortcut="toggleDm" aria-label="Modo DM activo. Pulsa para cambiar a modo jugador">Modo DM</button>
     </div>
+    <div id="roleBar" role="status" aria-live="polite"></div>
+    <div id="roleFrame" aria-hidden="true"></div>
     <div class="hud" id="dock" hidden>
       <div id="tabs" role="tablist" aria-label="Herramientas">
         <button role="tab" data-t="ver">Ver</button
@@ -122,6 +125,10 @@
               accept="application/json,.json"
               hidden
           /></label>
+        </div>
+        <div class="row">
+          <button class="btn" id="expPlayers" title="Archivo para jugadores: sin nada marcado como DM">Exportar para jugadores</button
+          ><button class="btn" id="expImg">Exportar imagen…</button>
         </div>
         <div class="row">
           <button class="btn" id="mClear">Borrar todos</button>
@@ -210,6 +217,17 @@
         <label
           ><input type="checkbox" data-opt="stats" /> Mostrar rendimiento</label
         >
+        <hr />
+        <h2>Modo DM y PIN</h2>
+        <p class="small" id="roleDesc"></p>
+        <div class="row">
+          <button class="btn" id="roleToggle">Cambiar de modo</button>
+        </div>
+        <div class="row">
+          <button class="btn" id="pinSet">Poner PIN</button
+          ><button class="btn" id="pinRemove" hidden>Quitar PIN</button>
+        </div>
+        <p class="small warn" id="pinInfo"></p>
       </section>
     </div>
     <div class="hud" id="chip" hidden>
@@ -238,6 +256,15 @@
         placeholder="Nota (opcional)"
         aria-label="Nota"
       ></textarea>
+      <textarea
+        id="pNoteDm"
+        rows="2"
+        maxlength="500"
+        placeholder="Nota privada del DM (nunca se comparte)"
+        aria-label="Nota privada del DM"
+        hidden
+      ></textarea>
+      <p class="small" id="pLock" hidden>Compartido por el DM: solo lectura.</p>
       <div class="row">
         <button id="pGo">Centrar</button><button id="pDel">Borrar</button
         ><button id="pOk">Listo</button>
@@ -255,12 +282,66 @@
     <div class="hud" id="lpop" hidden role="dialog" aria-label="Editar etiqueta">
       <input id="lText" maxlength="60" placeholder="Texto" aria-label="Texto de la etiqueta" />
       <select id="lStyle" aria-label="Estilo"></select>
+      <select id="lVis" aria-label="Visibilidad" hidden></select>
+      <p class="small" id="lLock" hidden>Compartida por el DM: solo lectura.</p>
       <label class="rng">Tamaño <input type="range" id="lSize" min="0.4" max="3" step="0.05" /></label>
       <label class="rng">Giro <input type="range" id="lRot" min="-180" max="180" step="1" /></label>
       <div class="row">
         <button id="lReset">Restaurar</button><button id="lDel">Borrar</button
         ><button id="lOk">Listo</button>
       </div>
+    </div>
+    <div class="hud" id="pind" hidden role="dialog" aria-modal="true" aria-labelledby="pinTitle">
+      <h2 id="pinTitle">PIN del DM</h2>
+      <p class="small warn" id="pinWarn"></p>
+      <input type="password" id="pinCur" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="PIN actual" aria-label="PIN actual" />
+      <input type="password" id="pinNew" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="PIN nuevo (4 a 8 cifras)" aria-label="PIN nuevo" />
+      <input type="password" id="pinRep" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="Repite el PIN nuevo" aria-label="Repite el PIN nuevo" />
+      <p class="small" id="pinMsg" role="alert"></p>
+      <div class="row"><button id="pinCancel">Cancelar</button><button id="pinOk">Aceptar</button></div>
+    </div>
+    <div class="hud" id="sharedd" hidden role="dialog" aria-modal="true" aria-label="Exportar para jugadores">
+      <h2>Exportar para jugadores</h2>
+      <div id="sharedSummary"></div>
+      <div class="row"><button id="shCancel">Cancelar</button><button id="shOk">Exportar</button></div>
+    </div>
+    <div class="hud" id="expd" hidden role="dialog" aria-modal="true" aria-label="Exportar imagen">
+      <h2>Exportar imagen</h2>
+      <fieldset>
+        <legend>Qué exportar</legend>
+        <label><input type="radio" name="eScope" value="full" checked /> Mapa completo</label>
+        <label><input type="radio" name="eScope" value="view" /> Vista actual</label>
+      </fieldset>
+      <fieldset>
+        <legend>Resolución</legend>
+        <label><input type="radio" name="eFactor" value="1" /> 1x</label>
+        <label><input type="radio" name="eFactor" value="2" checked /> 2x</label>
+        <label><input type="radio" name="eFactor" value="4" /> 4x</label>
+      </fieldset>
+      <p class="small" id="eSize" role="status"></p>
+      <fieldset>
+        <legend>Incluir</legend>
+        <label><input type="checkbox" id="eMarkers" checked /> Marcadores</label>
+        <label><input type="checkbox" id="eRoute" checked /> Ruta</label>
+        <label><input type="checkbox" id="eLabels" checked /> Etiquetas</label>
+        <label><input type="checkbox" id="eGrid" /> Cuadrícula</label>
+        <label><input type="checkbox" id="eFog" disabled /> Niebla (llegará con la Fase 3)</label>
+        <label><input type="checkbox" id="eLegend" checked /> Leyenda</label>
+        <label><input type="checkbox" id="eScalebar" checked /> Barra de escala</label>
+      </fieldset>
+      <fieldset id="eVersionBox">
+        <legend>Versión</legend>
+        <label><input type="radio" name="eVer" value="completa" checked /> Completa (con lo del DM)</label>
+        <label><input type="radio" name="eVer" value="jugadores" /> Vista de jugadores</label>
+      </fieldset>
+      <fieldset>
+        <legend>Formato</legend>
+        <label><input type="radio" name="eFormat" value="png" checked /> PNG</label>
+        <label><input type="radio" name="eFormat" value="pdf" /> PDF</label>
+      </fieldset>
+      <progress id="eProg" max="1" value="0" hidden></progress>
+      <p class="small" id="eMsg" role="status"></p>
+      <div class="row"><button id="eCancel">Cerrar</button><button id="eGo">Exportar</button></div>
     </div>
     <div class="hud" id="helpd" hidden role="dialog" aria-label="Atajos de teclado">
       <h2>Atajos de teclado</h2>

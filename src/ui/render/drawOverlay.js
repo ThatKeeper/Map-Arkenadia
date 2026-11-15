@@ -3,7 +3,7 @@ import { drawCompassRose } from './drawCompassRose';
 import { drawMapTitle } from './drawMapTitle';
 
 /** Dibuja título y rosa de los vientos. */
-export function drawOverlay(P, vx0, vy0, vx1, vy1) {
-  drawMapTitle(P, vx0, vy0, vx1, vy1);
-  drawCompassRose(P, vx0, vy0, vx1, vy1);
+export function drawOverlay(P, vx0, vy0, vx1, vy1, ctx, zoom) {
+  drawMapTitle(P, vx0, vy0, vx1, vy1, ctx);
+  drawCompassRose(P, vx0, vy0, vx1, vy1, ctx, zoom);
 }

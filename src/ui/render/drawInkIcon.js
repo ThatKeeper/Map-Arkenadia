@@ -10,16 +10,17 @@ import { dom } from '@/state';
  * @param {number} cy
  * @param {number} size lado en píxeles
  * @param {string} color color del trazo
+ * @param {CanvasRenderingContext2D} [ctx] contexto de destino (por defecto, el del mapa)
  */
-export function drawInkIcon(id, cx, cy, size, color) {
+export function drawInkIcon(id, cx, cy, size, color, ctx = dom.ctx) {
   const s = size / 24;
-  dom.ctx.save();
-  dom.ctx.translate(cx - size / 2, cy - size / 2);
-  dom.ctx.scale(s, s);
-  dom.ctx.strokeStyle = color;
-  dom.ctx.lineWidth = 1.7;
-  dom.ctx.lineCap = 'round';
-  dom.ctx.lineJoin = 'round';
-  for (const p of getIconPaths(id)) dom.ctx.stroke(p);
-  dom.ctx.restore();
+  ctx.save();
+  ctx.translate(cx - size / 2, cy - size / 2);
+  ctx.scale(s, s);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.7;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  for (const p of getIconPaths(id)) ctx.stroke(p);
+  ctx.restore();
 }

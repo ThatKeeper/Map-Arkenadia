@@ -53,7 +53,10 @@ export function bindSearchControls() {
   }
   input.oninput = refresh;
   input.onfocus = refresh;
-  input.onblur = () => setTimeout(hide, 120);
+  input.onblur = () =>
+    setTimeout(() => {
+      if (document.activeElement !== input) hide();
+    }, 120);
   input.onkeydown = (e) => {
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       e.preventDefault();

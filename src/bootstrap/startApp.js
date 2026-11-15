@@ -3,7 +3,7 @@ import { cacheDom } from './cacheDom';
 import { fitToWindow, resizeCanvas } from '@/features/navigation';
 import { computeQuality } from '@/features/quality';
 import { loadClassMap, preloadFonts } from '@/services/assets';
-import { loadSearchPrefs, loadSettings, loadShortcuts, loadUserData } from '@/services/storage';
+import { loadRole, loadSearchPrefs, loadSettings, loadShortcuts, loadUserData } from '@/services/storage';
 import { startWorker } from '@/services/worker';
 import { session, tilesState } from '@/state';
 import {
@@ -21,6 +21,7 @@ export function startApp() {
   cacheDom();
   loadSettings();
   loadUserData();
+  loadRole();
   loadSearchPrefs();
   loadShortcuts();
   bindQualityControls();

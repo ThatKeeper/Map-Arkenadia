@@ -49,6 +49,16 @@ repositorio. Recomendado: ejecuta `npm install` una vez en local y sube `package
 
 ## Datos guardados
 
-`localStorage`: `mapaDatos` (marcadores, categorías, ruta y etiquetas, con `schemaVersion: 2`), `mapaVista`
+`localStorage`: `mapaDatos` (marcadores, categorías, ruta y etiquetas, con `schemaVersion: 3`), `mapaRol`, `mapaPin` (solo el hash del PIN), `mapaVista`
 (incluye el filtro de categorías), `mapaCfg`, `mapaBusq` (recientes y favoritos) y `mapaAtajos`. Los datos antiguos
 (v1 o sin versión) se migran solos (`services/migrations/`).
+
+## Roles, compartir y exportar
+
+- **Modo DM** (franja roja): ve todo. **Modo jugador**: no ve lo marcado «Solo DM» y solo edita lo suyo.
+- **Exportar para jugadores** (Marcas → «Exportar para jugadores», solo en modo DM): genera un archivo sin nada del DM.
+  Los jugadores lo **importan** en modo jugador y se fusiona con sus notas sin pisarlas.
+- **PIN** (⚙ → «Modo DM y PIN»): evita cambios accidentales. **No es seguridad real**: quien tenga el archivo de
+  datos o las herramientas del navegador puede leerlo todo. Para ocultar algo de verdad, no lo incluyas en el archivo
+  que compartes (por eso el export para jugadores lo excluye).
+- **Exportar imagen** (Marcas → «Exportar imagen…»): PNG o PDF, con resolución elegible y límite de memoria.

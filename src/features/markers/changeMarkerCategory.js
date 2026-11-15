@@ -1,6 +1,7 @@
 // @ts-check
 // src/features/markers/changeMarkerCategory.js
 import { getCategoryById } from '@/features/categories';
+import { canEditVisibility } from '@/features/roles';
 import { updateMarker } from './updateMarker';
 import { getMarkerById } from './getMarkerById';
 
@@ -12,6 +13,7 @@ import { getMarkerById } from './getMarkerById';
  */
 export function changeMarkerCategory(id, categoryId) {
   const m = getMarkerById(id);
+  if (m && !canEditVisibility(m.visibilidad)) return;
   const next = getCategoryById(categoryId);
   if (!m || !next) return;
   const prev = getCategoryById(m.categoria);

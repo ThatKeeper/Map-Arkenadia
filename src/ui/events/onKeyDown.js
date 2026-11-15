@@ -5,9 +5,12 @@ import { findShortcutForEvent } from '@/features/shortcuts';
 import { interaction, loop, session, viewport } from '@/state';
 import {
   closeCategoryPopup,
+  closeExportDialog,
   closeHelp,
   closeLabelPopup,
   closeMarkerPopup,
+  closePinDialog,
+  closeSharedDialog,
 } from '@/ui/lists';
 import { requestRedraw } from '@/ui/loop';
 import { closeDock, setTool } from '@/ui/panels';
@@ -15,7 +18,10 @@ import { byId } from '@/utils';
 
 /** Cierra lo último que se abrió con Escape: ayuda, editores, herramienta y por fin el panel. */
 function handleEscape() {
-  if (!byId('helpd').hidden) closeHelp();
+  if (!byId('pind').hidden) closePinDialog();
+  else if (!byId('sharedd').hidden) closeSharedDialog();
+  else if (!byId('expd').hidden) closeExportDialog();
+  else if (!byId('helpd').hidden) closeHelp();
   else if (!byId('pop').hidden) closeMarkerPopup();
   else if (!byId('cpop').hidden) closeCategoryPopup();
   else if (!byId('lpop').hidden) closeLabelPopup();
@@ -54,6 +60,6 @@ export function onKeyDown(e) {
     e.preventDefault();
     return runShortcut(id);
   }
-  if (e.key.startsWith('Arrow') && !(target.closest && target.closest('#dock,#pop,#cpop,#lpop,#helpd')))
+  if (e.key.startsWith('Arrow') && !(target.closest && target.closest('#dock,#pop,#cpop,#lpop,#helpd,#pind,#expd,#sharedd')))
     panWithArrow(e.key);
 }

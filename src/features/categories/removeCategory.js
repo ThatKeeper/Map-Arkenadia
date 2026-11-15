@@ -11,6 +11,7 @@ import { session } from '@/state';
  * @returns {boolean} true si se borró
  */
 export function removeCategory(id) {
+  if (session.role !== 'dm') return false;
   const cats = session.userData.categories;
   if (cats.length < 2 || !cats.some((c) => c.id === id)) return false;
   updateUserData('Categoría borrada', ['categories', 'markers'], (d) => {

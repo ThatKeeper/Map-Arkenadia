@@ -16,9 +16,9 @@ const v1 = () => ({
 });
 
 describe('migraciones de userData', () => {
-  it('la versión actual del esquema es la 2', () => {
-    expect(SCHEMA_VERSION).toBe(2);
-    expect(MIGRATION_STEPS).toHaveLength(2);
+  it('la versión actual del esquema es la 3', () => {
+    expect(SCHEMA_VERSION).toBe(3);
+    expect(MIGRATION_STEPS).toHaveLength(3);
   });
 
   it('v0 → v1 añade schemaVersion sin tocar el resto', () => {
@@ -28,7 +28,7 @@ describe('migraciones de userData', () => {
   });
 
   it('v1 → v2 convierte los marcadores al formato nuevo', () => {
-    const out = migrateUserData(v1());
+    const out = migrateUserData(v1(), 2);
     expect(out.schemaVersion).toBe(2);
     const m = out.markers[0];
     expect(m.nombre).toBe('Castillo');
@@ -43,13 +43,13 @@ describe('migraciones de userData', () => {
   });
 
   it('v1 → v2 traduce el icono antiguo a icono y categoría nuevos', () => {
-    const out = migrateUserData(v1());
+    const out = migrateUserData(v1(), 2);
     expect([out.markers[0].icono, out.markers[0].categoria]).toEqual(LEGACY_ICON_MAP[1]);
     expect([out.markers[1].icono, out.markers[1].categoria]).toEqual(LEGACY_ICON_MAP[2]);
   });
 
   it('v1 → v2 añade categorías por defecto y etiquetas vacías, y conserva ruta, escala y unidad', () => {
-    const out = migrateUserData(v1());
+    const out = migrateUserData(v1(), 2);
     expect(out.categories.length).toBeGreaterThanOrEqual(8);
     expect(out.labels).toEqual({ edits: {}, custom: [], nid: 1 });
     expect(out.route).toEqual([{ x: 1, y: 2, n: 'A' }]);
@@ -68,17 +68,18 @@ describe('migraciones de userData', () => {
     const { schemaVersion, ...v0 } = v1();
     expect(schemaVersion).toBe(1);
     const out = migrateUserData(v0);
-    expect(out.schemaVersion).toBe(2);
+    expect(out.schemaVersion).toBe(3);
     expect(out.markers[0].nombre).toBe('Castillo');
+    expect(out.markers[0].notaDm).toBe('');
   });
 
   it('trata schemaVersion inválida como v0', () => {
     for (const bad of ['1', 0, -2, 1.5, null, NaN])
-      expect(migrateUserData({ schemaVersion: bad, markers: [] }).schemaVersion).toBe(2);
+      expect(migrateUserData({ schemaVersion: bad, markers: [] }).schemaVersion).toBe(3);
   });
 
   it('no migra datos que ya están en la versión de destino', () => {
-    const data = { schemaVersion: 2, markers: [] };
+    const data = { schemaVersion: 3, markers: [] };
     expect(migrateUserData(data)).toBe(data);
   });
 
@@ -88,9 +89,23 @@ describe('migraciones de userData', () => {
   });
 
   it('tolera marcadores antiguos con basura', () => {
-    const out = migrateUserData({ schemaVersion: 1, markers: [null, 5, { x: 1, y: 2, i: 99 }] });
+    const out = migrateUserData({ schemaVersion: 1, markers: [null, 5, { x: 1, y: 2, i: 99 }] }, 2);
     expect(out.markers).toHaveLength(3);
     expect(out.markers[2].icono).toBe(LEGACY_ICON_MAP[0][0]);
+  });
+
+  it('v2 → v3 añade la nota privada del DM vacía y conserva todo lo demás', () => {
+    const v2 = { schemaVersion: 2, markers: [{ id: 1, nombre: 'A', nota: 'n', x: 1, y: 2 }, null], route: [], scale: 4 };
+    const out = migrateUserData(v2);
+    expect(out.schemaVersion).toBe(3);
+    expect(out.markers[0]).toEqual({ id: 1, nombre: 'A', nota: 'n', notaDm: '', x: 1, y: 2 });
+    expect(out.markers[1]).toBe(null);
+    expect(out.scale).toBe(4);
+    expect(v2.schemaVersion).toBe(2);
+  });
+
+  it('v2 → v3 respeta una nota privada que ya exista', () => {
+    expect(migrateUserData({ schemaVersion: 2, markers: [{ id: 1, notaDm: 'x' }] }).markers[0].notaDm).toBe('x');
   });
 
   it('devuelve sin cambios lo que no es un objeto', () => {

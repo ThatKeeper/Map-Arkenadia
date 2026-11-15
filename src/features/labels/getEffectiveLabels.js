@@ -30,6 +30,8 @@ export function getEffectiveLabels() {
       minZoom: l[4],
       rot: e.rot !== undefined ? e.rot : l[5],
       tam: e.tam !== undefined ? e.tam : 1,
+      visibilidad: e.visibilidad || 'todos',
+      actualizado: e.actualizado || 0,
       original: true,
       editada: id in labels.edits,
     });
@@ -44,6 +46,8 @@ export function getEffectiveLabels() {
       minZoom: 0,
       rot: c.rot || 0,
       tam: c.tam || 1,
+      visibilidad: c.visibilidad || 'todos',
+      actualizado: c.actualizado || 0,
       original: false,
       editada: false,
     });

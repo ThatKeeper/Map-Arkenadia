@@ -4,7 +4,7 @@ import { doUndo } from './doUndo';
 import { focusSearch } from './focusSearch';
 import { resetView, zoomBy } from '@/features/navigation';
 import { openHelp } from '@/ui/lists';
-import { closeDock, openDock, setTool } from '@/ui/panels';
+import { closeDock, openDock, requestRoleSwitch, setTool } from '@/ui/panels';
 import { byId } from '@/utils';
 
 /**
@@ -15,6 +15,7 @@ export const shortcutActions = {
   toolMarker: () => setTool('marker'),
   toolRoute: () => setTool('route'),
   toolLabels: () => setTool('labels'),
+  toggleDm: requestRoleSwitch,
   zoomIn: () => zoomBy(1.3),
   zoomOut: () => zoomBy(1 / 1.3),
   fitAll: () => resetView(),

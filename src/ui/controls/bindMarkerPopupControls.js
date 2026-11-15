@@ -17,6 +17,10 @@ export function bindMarkerPopupControls() {
     const m = current();
     if (m) updateMarker(m.id, { nota: e.target.value });
   };
+  byId('pNoteDm').oninput = (e) => {
+    const m = current();
+    if (m) updateMarker(m.id, { notaDm: e.target.value });
+  };
   byId('pCat').onchange = (e) => {
     const m = current();
     if (m) changeMarkerCategory(m.id, e.target.value);

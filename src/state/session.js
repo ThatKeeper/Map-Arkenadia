@@ -31,6 +31,10 @@ export const session = {
   selectedMarkerId: null,
   // Etiqueta abierta en el editor
   selectedLabelId: null,
+  // Rol activo ('dm' | 'jugador')
+  role: 'dm',
+  // PIN del DM (sal + hash) o null
+  pin: null,
   // Búsquedas recientes y favoritas
   searchPrefs: { recientes: [], favoritos: [] },
   // Atajos personalizados: id → { key, ctrl, shift }

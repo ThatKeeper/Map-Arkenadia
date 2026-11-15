@@ -29,7 +29,8 @@ export function renderCategoryList() {
     only.onclick = () => showOnlyCategory(c.id);
     edit.setAttribute('aria-label', 'Editar ' + c.nombre);
     edit.onclick = () => openCategoryPopup(c.id);
-    row.append(cb, sw, nm, n, only, edit);
+    row.append(cb, sw, nm, n, only);
+    if (session.role === 'dm') row.appendChild(edit);
     box.appendChild(row);
   }
 }

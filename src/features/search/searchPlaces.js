@@ -2,7 +2,7 @@
 // src/features/search/searchPlaces.js
 import { scoreMatch } from './scoreMatch';
 import { getCategoryById } from '@/features/categories';
-import { getEffectiveLabels } from '@/features/labels';
+import { getVisibleLabels } from '@/features/labels';
 import { getVisibleMarkers } from '@/features/markers';
 import { session, viewport } from '@/state';
 import { normalizeText } from '@/utils';
@@ -44,7 +44,7 @@ export function searchPlaces(query, limit = 8) {
     push({ tipo: 'marcador', texto: m.nombre, detalle: cat ? cat.nombre : 'Marcador', x: m.x, y: m.y,
       z: viewport.fitScale * 2.5, color: cat && cat.color, icono: m.icono });
   }
-  for (const l of getEffectiveLabels())
+  for (const l of getVisibleLabels())
     if (l.tipo !== 'n')
       push({ tipo: 'lugar', texto: l.texto, detalle: 'Lugar del mapa', x: l.x, y: l.y,
         z: viewport.fitScale * (l.tipo === 'c' ? 1.8 : 3.2) });
